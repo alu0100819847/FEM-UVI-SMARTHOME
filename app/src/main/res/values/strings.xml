@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SmartHome</string>
+    <string name="strError">No se ha encontrado ninguna localización</string>
+    <string name="btnDescripcion">Botón buscar</string>
+    <string name="firebase_user_name">Firebase User: %s</string>
+    <string name="logout_button">Log out</string>
+
+    <string name="turnOff">Apagar lampara</string>
+    <string name="historial">Historial</string>
+
+    <string name="key">Location</string>
+
+
+</resources>

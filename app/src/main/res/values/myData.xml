@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Madrid">
+        <item>Madrid</item>
+        <item>40.00</item>
+        <item>-4.00</item>
+    </string-array>
+
+    <string-array name="Canarias">
+        <item>Canarias</item>
+        <item>28.00</item>
+        <item>-16.00</item>
+    </string-array>
+
+    <string-array name="Cataluña">
+        <item>Cataluña</item>
+        <item>41.39</item>
+        <item>-2.08</item>
+    </string-array>
+
+    <string-array name="Pais_Vasco">
+        <item>Pais Vasco</item>
+        <item>43.26</item>
+        <item>-2.96</item>
+    </string-array>
+
+    <string-array name="Andalucía">
+        <item>Andalucía</item>
+        <item>37.18</item>
+        <item>-3.62</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/opcTurnOff"
+        android:title="@string/turnOff"
+        android:icon="@android:drawable/ic_lock_power_off"
+        android:orderInCategory="5"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/opcHistorial"
+        android:title="@string/historial"
+        android:orderInCategory="10"
+        />
+    <item
+        android:id="@+id/opcLogOut"
+        android:title="@string/logout_button"
+        android:orderInCategory="15"
+        />
+
+
+</menu>

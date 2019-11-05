@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (null != uviResponse) {
                     String[] responseString = {loc, String.valueOf(uviResponse.getValue())};
 
-                    //Log.i(LOG_TAG, "obtenerInfoPais => respuesta=" + uviResponse.toString());
+                    Log.i(LOG_TAG, "obtenerInfoPais => respuesta=" + uviResponse.toString());
                     responseData.add(responseString);
                     List<String> historical = new ArrayList<>();
                     historical.add(loc.replace(" ","-"));
@@ -222,7 +222,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.opcTurnOff:
                 this.turnOff();
                 return true;
-            case R.id.historical:
+            case R.id.opcHistorial:
+                Bundle bundle = new Bundle();
+                bundle.putString(getString(R.string.key), "");
+
+                Intent intent = new Intent(getApplicationContext(), HistoricalUvi.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
 
                 return true;
             case R.id.opcLogOut:

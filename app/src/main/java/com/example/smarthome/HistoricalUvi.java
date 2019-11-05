@@ -33,7 +33,7 @@ public class HistoricalUvi extends AppCompatActivity {
     private ArrayAdapter<List<PostUvi>> historicalAdapter;
     private Context context = this;
     private String location;
-    List<PostUvi> listData;
+    static List<PostUvi> listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +44,13 @@ public class HistoricalUvi extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
         this.location = bundle.getString(getString(R.string.key));
         Log.i("cargando datos","nueva vista");
+        if(this.location.isEmpty()){
+            this.getData();
+        }
+        else {
+            this.getDataLocation();
+        }
 
-        this.getData();
     }
 
     public void add(List<String> data){
@@ -54,7 +59,6 @@ public class HistoricalUvi extends AppCompatActivity {
         FirebaseUvi uvi = new FirebaseUvi(data.get(0), data.get(1), new Float(data.get(2)));
         String key = data.get(0)+ data.get(1);
         this.uviDatabaseReference.child(key.replace(" ","-")).setValue(uvi);
-
     }
 
     private List<String> formatInfo(FirebaseUvi uvi){
@@ -62,32 +66,27 @@ public class HistoricalUvi extends AppCompatActivity {
         data.add(uvi.getLocation());
         data.add(uvi.getDate_iso());
         data.add(String.valueOf(uvi.getValue()));
+
         return data;
     }
 
 
-    public void getData(){
-        Log.i("cargando datos","getData");
+    public void getDataLocation(){
         listData = new ArrayList<>();
         ChildEventListener postListener = new ChildEventListener() {
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.i("tag", "begin");
                 List<PostUvi> tempListData = new ArrayList<>();
                 for(DataSnapshot exerciseSnapshot: dataSnapshot.getChildren())
                 {
-                    PostUvi post = dataSnapshot.getValue(PostUvi.class);
+                    PostUvi post = exerciseSnapshot.getValue(PostUvi.class);
+                    post.setLocation(post.getLocation().replace("-"," "));
                     if(post.getLocation().equals(location)){
-                        Log.i("cargando datos", post.toString());
                         tempListData.add(post);
                     }
                 }
-                if(tempListData.size() > listData.size()){
-                    listData = tempListData;
-                }
-                Log.i("tag", listData.toString());
-                historicalAdapter = new HistoricalAdapter(context, R.layout.location_adapter, listData);
+                historicalAdapter = new HistoricalAdapter(context, R.layout.historical_adapter, tempListData);
                 ListView lvRespuesta =(ListView) findViewById(R.id.historical);
                 lvRespuesta.setAdapter(historicalAdapter);
             }
@@ -112,6 +111,47 @@ public class HistoricalUvi extends AppCompatActivity {
                 Log.w("cargando datos", "loadPost:onCancelled", databaseError.toException());
             }
         };
-        this.uviDatabaseReference.addChildEventListener(postListener);
+        mFirebaseDatabase.getReference().addChildEventListener(postListener);
+    }
+
+    public void getData(){
+        listData = new ArrayList<>();
+        ChildEventListener postListener = new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                List<PostUvi> tempListData = new ArrayList<>();
+                for(DataSnapshot exerciseSnapshot: dataSnapshot.getChildren())
+                {
+                    PostUvi post = exerciseSnapshot.getValue(PostUvi.class);
+                    post.setLocation(post.getLocation().replace("-"," "));
+                    tempListData.add(post);
+                }
+                historicalAdapter = new HistoricalAdapter(context, R.layout.historical_adapter, tempListData);
+                ListView lvRespuesta =(ListView) findViewById(R.id.historical);
+                lvRespuesta.setAdapter(historicalAdapter);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("cargando datos", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        mFirebaseDatabase.getReference().addChildEventListener(postListener);
     }
 }

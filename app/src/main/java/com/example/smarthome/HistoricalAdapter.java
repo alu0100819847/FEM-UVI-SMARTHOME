@@ -41,7 +41,7 @@ public class HistoricalAdapter extends ArrayAdapter {
             LayoutInflater inflador =(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             vista = (LinearLayout) inflador.inflate(idLayout, parent, false);
         }
-        TextView tvLinea1 = vista.findViewById(R.id.tvItem1);
+
         float val = misDatos.get(position).getValue();
         if( val < 2.00){
             vista.setBackgroundColor(context.getResources().getColor(R.color.colorBajo));
@@ -55,11 +55,15 @@ public class HistoricalAdapter extends ArrayAdapter {
             vista.setBackgroundColor(context.getResources().getColor(R.color.colorExtremo));
         }
 
+        TextView tvLinea1 = vista.findViewById(R.id.tvItem1);
 
         tvLinea1.setText(misDatos.get(position).getLocation());
 
         TextView tvLinea2 = vista.findViewById(R.id.tvItem2);
-        tvLinea2.setText(String.valueOf(misDatos.get(position).getValue()));
+        tvLinea2.setText(String.valueOf(misDatos.get(position).getDate_iso().split("T")[0]));
+
+        TextView tvLinea3 = vista.findViewById(R.id.tvItem3);
+        tvLinea3.setText(String.valueOf(misDatos.get(position).getValue()));
 
         return vista;
     }

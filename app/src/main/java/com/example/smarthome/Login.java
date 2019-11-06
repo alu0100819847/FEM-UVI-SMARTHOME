@@ -1,12 +1,8 @@
 package com.example.smarthome;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 
-public class Login extends AppCompatActivity implements View.OnClickListener {
+public class Login extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -86,9 +82,4 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 
-    @Override
-    public void onClick(View v) {
-        mFirebaseAuth.signOut();
-        Log.i(LOG_TAG, "Log out");
-    }
 }

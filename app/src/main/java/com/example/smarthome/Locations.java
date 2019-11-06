@@ -1,7 +1,6 @@
 package com.example.smarthome;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,13 +8,13 @@ import java.util.Map;
 
 public class Locations {
 
-
-    String[] locations;
     Map<String, String[]> data;
+
     Context context;
+
     public Locations(Context context){
         this.context = context;
-        this.data = new HashMap<String, String[]>();
+        this.data = new HashMap<>();
         this.addMadrid();
         this.addCanarias();
         this.addCataluña();
@@ -47,10 +46,6 @@ public class Locations {
         this.data.put("Andalucía", Andalucia);
     }
 
-    public String[] get(String location){
-        return this.data.get(location);
-    }
-
     public ArrayList<String[]> getData(){
         ArrayList<String[]> listData = new ArrayList<String[]>();
         for(String[] array : this.data.values()){
@@ -58,8 +53,5 @@ public class Locations {
         }
         return listData;
     }
-/*
-    public String[] getLocations(){
-        return
-    }*/
+
 }

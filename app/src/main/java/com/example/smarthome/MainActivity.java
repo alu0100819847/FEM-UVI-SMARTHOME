@@ -1,9 +1,5 @@
 package com.example.smarthome;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,40 +8,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.smarthome.fcube.commands.FCColor;
 import com.example.smarthome.fcube.commands.FCOff;
 import com.example.smarthome.fcube.commands.FCOn;
 import com.example.smarthome.fcube.config.FeedbackCubeConfig;
 import com.example.smarthome.fcube.config.FeedbackCubeManager;
-import com.example.smarthome.feeback.FeedbackColor;
 import com.example.smarthome.models.Uvi;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener  {
 
@@ -63,72 +41,48 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private FirebaseAuth mFirebaseAuth;
     private int counter;
 
-
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference uviDatabaseReference;
-
-
-    private FirebaseStorage mFirebaseStorage;
-    private StorageReference mChatPhotosStorageReference;
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFirebaseAuth = FirebaseAuth.getInstance();
-
         this.counter = 0;
         startApp();
-
     }
 
     private void startApp(){
         lvRespuesta =(ListView) findViewById(R.id.lvRespuesta);
         lvRespuesta.setOnItemClickListener(this);
         this.responseData = new ArrayList<>();
-
         this.location = new Locations(this).getData();
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
         apiService = retrofit.create(IUviRESTAPIService.class);
         for(String[] info : location){
             if(info != null){
                 this.obtenerInfoUvi(info);
             }
-
         }
     }
 
     public void mostrar(){
         LocationsAdapter locationsAdapter = new LocationsAdapter(context, R.layout.location_adapter, this.responseData);
-
         lvRespuesta.setAdapter(locationsAdapter);
-
     }
 
     public void obtenerInfoUvi(final String[] data) {
-
         Call<Uvi> call_async = apiService.getUvi(data[1], data[2], this.API_KEY);
         final String loc = data[0];
         Log.i(LOG_TAG, call_async.request().toString());
-
         call_async.enqueue(new Callback<Uvi>() {
-
 
             @Override
             public void onResponse(Call<Uvi> call, Response<Uvi> response) {
                 Uvi uviResponse = response.body();
                 if (null != uviResponse) {
                     String[] responseString = {loc, String.valueOf(uviResponse.getValue())};
-
                     Log.i(LOG_TAG, "obtenerInfoPais => respuesta=" + uviResponse.toString());
                     responseData.add(responseString);
                     List<String> historical = new ArrayList<>();
@@ -140,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     if(counter > 4){
                         mostrar();
                     }
-
                 } else {
                     //tvRespuesta.setText(getString(R.string.strError));
                     Log.i(LOG_TAG, getString(R.string.strError));
@@ -195,19 +148,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     + 0, "" + 128);
             new FeedbackCubeManager().execute(fcc);
         }
-
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.key), responseData.get(position)[0]);
-
         Intent intent = new Intent(getApplicationContext(), HistoricalUvi.class);
         intent.putExtras(bundle);
         startActivity(intent);
-
     }
 
     public void logout(){
         mFirebaseAuth.signOut();
-        Log.i(LOG_TAG, "Log out");
+        Log.i(LOG_TAG, "Loged out");
         finish();
     }
 
@@ -244,6 +194,4 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
-
-
 }

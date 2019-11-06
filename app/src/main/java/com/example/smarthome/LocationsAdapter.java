@@ -9,8 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LocationsAdapter extends ArrayAdapter {
@@ -53,7 +51,6 @@ public class LocationsAdapter extends ArrayAdapter {
         } else {
             vista.setBackgroundColor(context.getResources().getColor(R.color.colorExtremo));
         }
-
 
         tvLinea1.setText(misDatos.get(position)[0]);
 
